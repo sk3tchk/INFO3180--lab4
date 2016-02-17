@@ -43,7 +43,7 @@ def add_entry():
     title = request.form['title']
     file = request.files['file']
     filename = file.filename
-    file.save(os.path.join("filefolder", filename))
+    file.save(os.path.join("static/uploads", filename))
     return render_template("files.html",title=title)
     #g.db.execute('insert into entries (title, text) values (?, ?)',
     #             [title, filename])
@@ -100,6 +100,19 @@ def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
 
+@app.route('iterate')
+def iterate():
+    rootdir = os.getcwd()
+
+    print rootdir
+
+    for subdir, dirs, files in os.walk(rootdir + '/static/uploads'):
+    for file in files:
+    print os.path.join(subdir, file)
+    
+@app.route('/filelisting')
+def filelisting():
+    return iterate()
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0",port="8888")
